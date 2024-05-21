@@ -4,8 +4,8 @@
 #if defined(CONFIG_BT_ENABLED)
 
 #include "BleConnectionStatus.h"
-#include "BLEHIDDevice.h"
-#include "BLECharacteristic.h"
+#include "NimBLEHIDDevice.h"
+#include "NimBLECharacteristic.h"
 #include "Print.h"
 
 
@@ -90,14 +90,16 @@ class BleComboKeyboard : public Print
 {
 private:
   BleConnectionStatus* connectionStatus;
-  BLEHIDDevice* hid;
-  BLECharacteristic* inputKeyboard;
-  BLECharacteristic* outputKeyboard;
-  BLECharacteristic* inputMediaKeys;
+  NimBLEHIDDevice* hid;
+  NimBLECharacteristic* inputKeyboard;
+  NimBLECharacteristic* outputKeyboard;
+  NimBLECharacteristic* inputMediaKeys;
   
   KeyReport _keyReport;
   MediaKeyReport _mediaKeyReport;
   static void taskServer(void* pvParameter);
+  uint32_t           _delay_ms = 7;
+  void delay_ms(uint64_t ms);
 
 public:
   BleComboKeyboard(std::string deviceName = "ESP32 Keyboard/Mouse", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
@@ -117,10 +119,11 @@ public:
   bool isConnected(void);
   void setBatteryLevel(uint8_t level);
   uint8_t batteryLevel;
+  void setDelay(uint32_t ms);
   std::string deviceManufacturer;
   std::string deviceName;
 
-  BLECharacteristic* inputMouse;
+  NimBLECharacteristic* inputMouse;
 
 };
 
